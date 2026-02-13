@@ -26,3 +26,63 @@ body{
       padding: 20px 10px;
       margin-top: auto; /* Stick footer at bottom */
     }
+
+
+  .hotel-card {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  width: 300px;
+  margin: 10px;
+}
+
+.hotel-card h3{
+  color: black;
+  font-size: 18;
+}
+
+.hotel-card img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  
+  border-radius: 30px;
+}
+
+.price {
+  font-weight: bold;
+  color: #ff5a5f;
+}
+
+
+.row{
+ 
+  display: grid;
+grid-template-columns: repeat(4, 1fr);
+  gap: 10px; /* spacing between cards */
+  margin: 10px;
+
+}
+
+
+/* Responsive for smaller screens */
+@media (max-width: 1200px) {
+  .row {
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  }
+}
+
+@media (max-width: 900px) {
+  .row {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+  }
+}
+
+@media (max-width: 600px) {
+  .row{
+    grid-template-columns: 1fr; /* 1 card per row */
+  }
+
+}
+

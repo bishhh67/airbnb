@@ -4,15 +4,21 @@
 <form method="get" action="/listings/create">
   <button> create </button>
 </form>
-   <ul>
-
+   
+<div class="row" >
   <% for ( item of alllistings){ %>
-  
-      <li><a href="listings/<%=item._id%>"> <%= item.title %> </a> </li>
 
-      <li><a href="listings/<%=item._id%>"> <%= item.title %> </a> </li>
+  <div class="hotel-card">
+    <a href="/listings/<%=item._id%>" style="text-decoration: none;" >
 
-      <li><a href="listings/<%=item._id%>"> <%= item.title %> </a> </li>
-  <%}%>
-   </ul>
+  <img src="<%=item.image.url%>" alt="<%= item.title%>">
+  <h3><%= item.title %></h3>
+
+  <p class="price">Rs: <%= item.price %> /night</p>
+</a>
+</div>
+
+<% }%>
+
+</div>
 </body>

@@ -1,0 +1,18 @@
+ body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* white background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  /* Form container */
+  form {
+    background-color: #f9f9f9; /* slightly off-white for form box */
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 300px;
+  }
