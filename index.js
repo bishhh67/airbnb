@@ -17,7 +17,7 @@ main().then(()=>{console.log("mongo conn succesfull");}).catch((err)=>{console.l
 // routes 
 
 app.get("/",(req,res)=>{
-  res.send("welcome to home");
+  res.send("welcome to your home");
 })
 
 const port=3000;
