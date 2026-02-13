@@ -83,6 +83,14 @@ app.put("/listings/:id",async(req,res)=>{
 })
 
 
+//delete 
+app.delete("/listings/:id",async(req,res)=>{
+  console.log("inside delte route");
+let {id}=req.params;
+  await Listing.findByIdAndDelete(id);
+  res.redirect("/listings");
+})
+
 //yeslai last maa rakhya kinaki , yesma /listing paxi dynamic parameter xa 
 //jasle aru normal /listing paxi ko paramter ko kaam kharab garxa
 //view a data 
