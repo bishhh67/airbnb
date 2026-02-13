@@ -93,7 +93,7 @@ let {id}=req.params;
 
 //yeslai last maa rakhya kinaki , yesma /listing paxi dynamic parameter xa 
 //jasle aru normal /listing paxi ko paramter ko kaam kharab garxa
-//view a data 
+//view data 
 app.get("/listings/:id",async(req,res)=>{
   console.log("inside view");
   let {id}= req.params;
