@@ -15,7 +15,13 @@ main().then(()=>{console.log("mongo conn succesfull");}).catch((err)=>{console.l
 //path 
 const path = require("path");
 app.set("view engine","ejs");
-app.set("views",path.join(__dirname,"views","listings"));
+app.set("views",path.join(__dirname,"views"));
+
+app.use(express.static(path.join(__dirname,"public")));
+
+//ejs mate
+const ejsMate = require("ejs-mate");
+app.engine("ejs",ejsMate);
 
 //importing the model , collection
 const Listing= require("./models/listings");
@@ -41,7 +47,7 @@ app.get("/",(req,res)=>{
 //list all data 
 app.get("/listings",async(req,res)=>{
   let alllistings = await Listing.find({});
-  res.render("listall.ejs",{alllistings});
+  res.render("listings/listall.ejs",{alllistings});
 
 })
 
@@ -50,7 +56,7 @@ app.get("/listings",async(req,res)=>{
 app.get("/listings/create",(req,res)=>{
   
 console.log("create form called");
- res.render("create.ejs");
+ res.render("listings/create.ejs");
 })
 
 
@@ -69,7 +75,7 @@ res.redirect("/listings");
 app.get("/listings/:id/edit",(req,res)=>{
 let {id} =req.params;
 console.log("edit form called");
- res.render("edit.ejs",{id});
+ res.render("listings/edit.ejs",{id});
 })
 
 app.put("/listings/:id",async(req,res)=>{
@@ -99,7 +105,7 @@ app.get("/listings/:id",async(req,res)=>{
   let {id}= req.params;
   let listed = await Listing.findOne({_id:id});
 
- res.render("view.ejs",{listed});
+ res.render("listings/view.ejs",{listed});
 })
 
 
