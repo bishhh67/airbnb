@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+
+    <h2> <%=listed.title %> </h2>
+    <img src="<%=listed.image.url%>" height="100px" width="100px" alt="couldnt load">
+    <h2> <%=listed.price%> </h2>
+    <h2> <%=listed.location%> </h2>
+    <h2> <%=listed.country %> </h2>
+  </div>
+
+  <form method="get" action="/listings/<%=listed._id%>/edit"><button>edit</button> </form>
+</body>
+</html>
