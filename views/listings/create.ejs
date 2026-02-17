@@ -63,6 +63,18 @@
     margin-bottom: 20px;
     color: #333;
   }
+
+  .invalid{
+    
+  border-color: red;
+  
+}
+.valid{
+  border-color: green;
+}
+
+
+
 </style>
 
 </head>
@@ -70,12 +82,46 @@
   
   <form method="post" action="/listings">
 
-    title: <input type="text" name="title">
-    price: <input type="text" name="price">
-    location: <input type="text" name="location">
-    country:<input type="text" name="country">
+    title: <input type="text" name="title" required>
+     <div class="msg" style="display: none;">inavlid entry</div>
+    
 
-    <button> submit </button>
+    price: <input type="text" name="price" required>
+     <div class="msg" style="display: none;">inavlid entry</div>
+    
+
+    location: <input type="text" name="location" required>
+    <div class="msg" style="display: none;">inavlid entry</div>
+    
+
+    country:<input type="text" name="country" required>
+     <div class="msg" style="display: none;">inavlid entry</div>
+
+    <button type="submit" onclick="check()"> submit </button>
   </form>
+
+
+<script>
+function check() {
+  let inputs = document.getElementsByTagName("input");
+  let msgs = document.getElementsByClassName("msg");
+
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].value == "") {
+      inputs[i].className = "invalid";
+      msgs[i].style.color = "red";
+      msgs[i].innerText = "Invalid entry";
+      msgs[i].style.display = "block";
+    } else {
+      inputs[i].className = "valid";
+      msgs[i].style.color = "green";
+      msgs[i].innerText = "Valid entry";
+      msgs[i].style.display = "block";
+    }
+  }
+}
+</script>
 </body>
+
+
 </html>
