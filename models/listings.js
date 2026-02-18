@@ -2,6 +2,7 @@ const mongoose=require("mongoose");
 const { type } = require("../joischema");
 const { ref } = require("joi");
 
+const Review= require("../models/review");
 const listingSchema = new mongoose.Schema({
 title:{
   type:String,
@@ -38,6 +39,18 @@ reviews:[{
 ]
 });
 
+listingSchema.post("findOneAndDelete",async(listing)=>{
+  if(listing){
+    await Review.deleteMany({ _id : {$in : listing.reviews}});
+  }
+})
+
+
+
 const Listing = new mongoose.model("Listing",listingSchema);
+
+
+
+
 
 module.exports= Listing;

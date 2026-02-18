@@ -98,6 +98,18 @@
 .valid{
   border-color: green;
 }
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.review-card {
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+}
+
   </style>
 </head>
 <body>
@@ -122,6 +134,7 @@
       </form>
     </div>
 
+
     <div class="review">
     
     <form action="/listings/<%=listed.id%>/reviews" method="POST" onsubmit="check(event)">
@@ -137,6 +150,27 @@
       <button type="submit" > submit</button>
     </form>
     </div>
+
+     <h2> All reviews :</h2>
+      <div class="reviews-grid">
+      <% for (review of listed.reviews) { %>
+       <!-- Loop your reviews here -->
+      <div class="review-card">
+
+        <div class="rating">Stars : <%= review.rating%> *</div>
+        <p class="comment"><%= review.comment %></p>
+
+        <form method="POST" action="/listings/<%=listed._id%>/reviews/<%=review._id%>?_method=DELETE"> 
+          <button>delete </button>
+        </form>
+
+        
+        </div>
+       <%}%>
+      </div>
+
+    
+
   
   </div>
 

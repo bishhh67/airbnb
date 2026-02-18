@@ -151,7 +151,19 @@ app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
 
 }))
 
+//delete review 
 
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
+
+
+  let {id, reviewId}=req.params;
+
+  await Listing.findByIdAndUpdate(id, {$pull :{reviews: reviewId}}) ;
+  await  Review.findByIdAndDelete(reviewId);
+
+  console.log("review dleted ");
+  res.redirect(`/listings/${id}`);
+}) )
 
 
 
@@ -161,7 +173,7 @@ app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
 app.get("/listings/:id",wrapAsync(async(req,res)=>{
   console.log("inside view");
   let {id}= req.params;
-  let listed = await Listing.findOne({_id:id});
+  let listed = await Listing.findOne({_id:id}).populate("reviews");
 
  res.render("listings/view.ejs",{listed});
 }))
