@@ -25,7 +25,8 @@
       display: block;
       margin: 20px auto;
       max-width: 100%;
-      height: auto;
+      height: 500px;
+      width: 800px;
       border-radius: 10px;
       object-fit: cover;
     }
@@ -85,6 +86,18 @@
         flex-direction: column;
       }
     }
+
+    .review{
+      align-items: center;
+    }
+    .invalid{
+    
+  border-color: red;
+  
+}
+.valid{
+  border-color: green;
+}
   </style>
 </head>
 <body>
@@ -108,7 +121,26 @@
         <button type="submit" class="delete-btn">Delete</button>
       </form>
     </div>
+
+    <div class="review">
+    
+    <form action="/listings/<%=listed.id%>/reviews" method="POST" onsubmit="check(event)">
+      <h3> leave a rating </h3>
+      <label for="rating"> Rate : </label>
+      <input type="range" id="rating" min="1" max="5" name="review[rating]">
+
+     <label for="comment"> comment</label>
+      <textarea required name="review[comment]" id="comment"  rows="6" cols="25" ></textarea>
+       <div class="msg" style="display: none;">inavlid entry</div>
+
+
+      <button type="submit" > submit</button>
+    </form>
+    </div>
+  
   </div>
+
+
 
 </body>
 </html>

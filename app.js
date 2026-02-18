@@ -30,7 +30,9 @@ const wrapAsync = require("./utils/asyncwrap");
 
 const ExpressError= require("./utils/ExpressErros");
 
-const listingschema=require("./joischema");
+const {listingschema,reviewSchema} =require("./joischema");
+
+const Review =require("./models/review");
 
 //data parsing 
 app.use(express.urlencoded({extended:true}));
@@ -46,6 +48,20 @@ app.use(methodOverride("_method"));
 
 const validatelisting = (req,res,next)=>{
   let result = listingschema.validate(req.body);
+console.log(result);
+
+if(result.error){
+  let errmsg= result.error.details.map((el)=>el.message).join(",");
+  throw new ExpressError(400,errmsg);
+}
+else{
+  next();
+}
+}
+
+
+const validateReview = (req,res,next)=>{
+  let result = reviewSchema.validate(req.body);
 console.log(result);
 
 if(result.error){
@@ -119,6 +135,26 @@ let {id}=req.params;
   res.redirect("/listings");
 }))
 
+// review post 
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
+
+  let listing = await Listing.findById(req.params.id);
+  let newReview = new Review(req.body.review);
+
+  //listing vitra ko property ko reviews , so push garea haleko 
+  listing.reviews.push(newReview);
+
+  await newReview.save();
+  await listing.save();
+  console.log("new review saved");
+  res.send("new review save ");
+
+}))
+
+
+
+
+
 //yeslai last maa rakhya kinaki , yesma /listing paxi dynamic parameter xa 
 //jasle aru normal /listing paxi ko paramter ko kaam kharab garxa
 //view data 
@@ -137,7 +173,7 @@ app.all(/.*/, (req, res, next) => {
 
 
 app.use((err,req,res,next)=>{
-  let {status,message}=err;
+  let {status=500,message=" default msg : something went wrong "}=err;
   res.status(status).render("listings/errors",{err});
   
 });

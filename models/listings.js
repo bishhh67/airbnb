@@ -1,4 +1,6 @@
 const mongoose=require("mongoose");
+const { type } = require("../joischema");
+const { ref } = require("joi");
 
 const listingSchema = new mongoose.Schema({
 title:{
@@ -28,6 +30,12 @@ location:{
 country:{
   type:String,
 },
+reviews:[{
+  type: mongoose.Schema.Types.ObjectId,
+  ref:"Review",
+}
+
+]
 });
 
 const Listing = new mongoose.model("Listing",listingSchema);
