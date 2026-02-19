@@ -165,7 +165,7 @@ app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
   res.redirect(`/listings/${id}`);
 }) )
 
-//hello
+//hello wrold 
 
 //yeslai last maa rakhya kinaki , yesma /listing paxi dynamic parameter xa 
 //jasle aru normal /listing paxi ko paramter ko kaam kharab garxa
