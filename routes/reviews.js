@@ -1,13 +1,9 @@
 const express=require("express");
 const router = express.Router({mergeParams:true});
-
 const Listing= require("../models/listings");
 const Review =require("../models/review");
-
 const wrapAsync = require("../utils/asyncwrap");
-
 const ExpressError= require("../utils/ExpressErros");
-
 const {listingschema,reviewSchema} =require("../joischema");
 
 

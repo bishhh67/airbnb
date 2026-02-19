@@ -2,7 +2,6 @@
 const express = require("express");
 const app = express();
 
-
 //mongoose connect 
 const mongoose=require("mongoose");
 
