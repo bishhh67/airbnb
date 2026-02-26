@@ -37,6 +37,12 @@ app.use(express.urlencoded({extended:true}));
 const methodOverride= require("method-override");
 app.use(methodOverride("_method"));
 
+//passport : 
+const passport=require("passport");
+const LocalStrategy = require("passport-local");
+const User= require("./models/users");
+
+
 const sessionOptions = {
   secret: "mysecretcode",
   resave:false,
@@ -48,15 +54,25 @@ const sessionOptions = {
   }
 
 }
-
+// establishing session ra passport for authentication
 app.use(session(sessionOptions));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
   res.locals.added = req.flash("added");
    res.locals.deleted = req.flash("deleted");
   next();
 })
+
+
+
 
 /////////
 const listings= require("./routes/listings");
@@ -66,7 +82,18 @@ app.use("/",listings);
 app.use("/",reviews);
 
 
+app.get("/registeruser",async(req,res)=>{
 
+  let fakeuser = new User({
+    email: "b63@gmail.com ", 
+    username: "bishh" ,
+  });
+
+  let newUser = await User.register(fakeuser, "mypass");
+  res.send(newUser);
+
+
+})
 
 
 app.all(/.*/, (req, res, next) => {
