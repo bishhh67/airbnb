@@ -40,7 +40,6 @@ console.log("create form called");
  
 })
 
-
 router.post("/listings",validatelisting,wrapAsync(async(req,res,next)=>{
 
 let {title,price,location,country}= req.body;
@@ -48,6 +47,7 @@ let {title,price,location,country}= req.body;
 await Listing.insertOne({title,price,location,country});
 
 console.log("new data entered in database ");
+req.flash("added","listing added success");
 res.redirect("/listings");
  
 }))
@@ -75,6 +75,7 @@ router.delete("/listings/:id",wrapAsync(async(req,res)=>{
   console.log("inside delte route");
 let {id}=req.params;
   await Listing.findByIdAndDelete(id);
+  req.flash("deleted","listing delted");
   res.redirect("/listings");
 }))
 

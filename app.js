@@ -28,6 +28,7 @@ const wrapAsync = require("./utils/asyncwrap");
 const ExpressError= require("./utils/ExpressErros");
 const {listingschema,reviewSchema} =require("./joischema");
 const session = require("express-session");
+const flash = require("connect-flash");
 
 //data parsing 
 app.use(express.urlencoded({extended:true}));
@@ -35,15 +36,6 @@ app.use(express.urlencoded({extended:true}));
 //method over ride 
 const methodOverride= require("method-override");
 app.use(methodOverride("_method"));
-
-/////////
-const listings= require("./routes/listings");
-const reviews= require("./routes/reviews");
-
-//////
-app.use("/",listings);
-app.use("/",reviews);
-
 
 const sessionOptions = {
   secret: "mysecretcode",
@@ -56,7 +48,26 @@ const sessionOptions = {
   }
 
 }
+
 app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req,res,next)=>{
+  res.locals.added = req.flash("added");
+   res.locals.deleted = req.flash("deleted");
+  next();
+})
+
+/////////
+const listings= require("./routes/listings");
+const reviews= require("./routes/reviews");
+//////
+app.use("/",listings);
+app.use("/",reviews);
+
+
+
+
 
 app.all(/.*/, (req, res, next) => {
   throw new ExpressError(404, "page not found");
