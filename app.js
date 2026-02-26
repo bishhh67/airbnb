@@ -43,6 +43,10 @@ const LocalStrategy = require("passport-local");
 const User= require("./models/users");
 
 
+//
+
+
+
 const sessionOptions = {
   secret: "mysecretcode",
   resave:false,
@@ -77,23 +81,13 @@ app.use((req,res,next)=>{
 /////////
 const listings= require("./routes/listings");
 const reviews= require("./routes/reviews");
+const signup = require("./routes/signup");
 //////
 app.use("/",listings);
 app.use("/",reviews);
+app.use("/",signup);
 
 
-app.get("/registeruser",async(req,res)=>{
-
-  let fakeuser = new User({
-    email: "b63@gmail.com ", 
-    username: "bishh" ,
-  });
-
-  let newUser = await User.register(fakeuser, "mypass");
-  res.send(newUser);
-
-
-})
 
 
 app.all(/.*/, (req, res, next) => {
@@ -110,3 +104,18 @@ const port=3000;
 app.listen(port,()=>{
   console.log(`running on http://localhost:${port}/listings`);
 })
+
+
+
+
+// app.get("/registeruser",async(req,res)=>{
+
+//   let fakeuser = new User({
+//     email: "b63@gmail.com ", 
+//     username: "bishh" ,
+//   });
+//   let newUser = await User.register(fakeuser, "mypass");
+//   res.send(newUser);
+
+
+// })
