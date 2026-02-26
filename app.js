@@ -27,6 +27,7 @@ const Listing= require("./models/listings");
 const wrapAsync = require("./utils/asyncwrap");
 const ExpressError= require("./utils/ExpressErros");
 const {listingschema,reviewSchema} =require("./joischema");
+const session = require("express-session");
 
 //data parsing 
 app.use(express.urlencoded({extended:true}));
@@ -44,6 +45,13 @@ app.use("/",listings);
 app.use("/",reviews);
 
 
+const sessionOptions = {
+  secret: "mysecretcode",
+  resave:false,
+  saveUninitialized:true,
+
+}
+app.use(session(sessionOptions));
 
 app.all(/.*/, (req, res, next) => {
   throw new ExpressError(404, "page not found");
