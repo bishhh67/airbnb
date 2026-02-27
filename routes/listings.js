@@ -8,6 +8,7 @@ const wrapAsync = require("../utils/asyncwrap");
 const ExpressError= require("../utils/ExpressErros");
 
 const {listingschema,reviewSchema} =require("../joischema");
+const { isLogin } = require("../authenticate");
 
 
 const validatelisting = (req,res,next)=>{
@@ -33,14 +34,14 @@ router.get("/listings",wrapAsync(async(req,res)=>{
 
 
 //create new data 
-router.get("/listings/create",(req,res)=>{
+router.get("/listings/create",isLogin,(req,res)=>{
  
 console.log("create form called");
  res.render("listings/create.ejs");
  
 })
 
-router.post("/listings",validatelisting,wrapAsync(async(req,res,next)=>{
+router.post("/listings",isLogin,validatelisting,wrapAsync(async(req,res,next)=>{
 
 let {title,price,location,country}= req.body;
 
@@ -53,7 +54,7 @@ res.redirect("/listings");
 }))
 
 //edit a data 
-router.get("/listings/:id/edit",(req,res)=>{
+router.get("/listings/:id/edit",isLogin,(req,res)=>{
 let {id} =req.params;
 console.log("edit form called");
  res.render("listings/edit.ejs",{id});

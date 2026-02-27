@@ -15,9 +15,16 @@
     <a href="/listings">alllistings</a>
     <a href="/listings/create">create new listing </a>
     
+     <% if(!curruser){ %>
+    <a href="/signup">sign up </a>
+    <a href="/login">login</a>
+    <% } %>
 
-
+    <% if(curruser){ %>
+    <a href="/logout">logout </a>
+      <% } %>
   </div>
+  
 
 </body>
 </html>
