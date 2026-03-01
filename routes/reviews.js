@@ -5,7 +5,7 @@ const Review =require("../models/review");
 const wrapAsync = require("../utils/asyncwrap");
 const ExpressError= require("../utils/ExpressErros");
 const {listingschema,reviewSchema} =require("../joischema");
-const {isLogin} = require("../authenticate");
+const {isLogin, isReviewAuthor} = require("../authenticate");
 
 
 const validateReview = (req,res,next)=>{
@@ -40,10 +40,11 @@ router.post("/listings/:id/reviews",isLogin,validateReview,wrapAsync(async(req,r
 
 //delete review 
 
-router.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
+router.delete("/listings/:id/reviews/:reviewId",isLogin,isReviewAuthor, wrapAsync(async(req,res)=>{
 
 
   let {id, reviewId}=req.params;
+  // yo review id , tei maathi route maa dekhinxa in line 43
 
   await Listing.findByIdAndUpdate(id, {$pull :{reviews: reviewId}}) ;
   await  Review.findByIdAndDelete(reviewId);
