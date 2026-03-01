@@ -9,6 +9,7 @@ const ExpressError= require("../utils/ExpressErros");
 
 const {listingschema,reviewSchema} =require("../joischema");
 const { isLogin ,isOwner} = require("../authenticate");
+const { populate } = require("../models/review");
 
 
 const validatelisting = (req,res,next)=>{
@@ -86,7 +87,7 @@ let {id}=req.params;
 router.get("/listings/:id",wrapAsync(async(req,res)=>{
   console.log("inside view");
   let {id}= req.params;
-  let listed = await Listing.findOne({_id:id}).populate("reviews").populate("owner");
+  let listed = await Listing.findOne({_id:id}).populate({path:"reviews",populate:{path:"author"}}).populate("owner");
   console.log(listed);
  res.render("listings/view.ejs",{listed});
 }))

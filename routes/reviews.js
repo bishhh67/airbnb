@@ -5,6 +5,7 @@ const Review =require("../models/review");
 const wrapAsync = require("../utils/asyncwrap");
 const ExpressError= require("../utils/ExpressErros");
 const {listingschema,reviewSchema} =require("../joischema");
+const {isLogin} = require("../authenticate");
 
 
 const validateReview = (req,res,next)=>{
@@ -20,12 +21,13 @@ else{
 }
 }
 
-// review post 
-router.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
+// review lai post  garne
+router.post("/listings/:id/reviews",isLogin,validateReview,wrapAsync(async(req,res)=>{
 
   let listing = await Listing.findById(req.params.id);
   let newReview = new Review(req.body.review);
-
+  newReview.author = req.user._id;
+  console.log(newReview);
   //listing vitra ko property ko reviews , so push garea haleko 
   listing.reviews.push(newReview);
 
