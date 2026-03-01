@@ -25,72 +25,32 @@ else{
 }
 }
 
+// import from controllers 
+const listingcontroller = require("../controllers/listings");
 
 //list all data 
-router.get("/listings",wrapAsync(async(req,res)=>{
-  let alllistings = await Listing.find({});
-  res.render("listings/listall.ejs",{alllistings});
-
-}))
+router.get("/listings",wrapAsync(listingcontroller.index))
 
 
 //create new data 
-router.get("/listings/create",isLogin,(req,res)=>{
- 
-console.log("create form called");
- res.render("listings/create.ejs");
- 
-})
+router.get("/listings/create",isLogin,listingcontroller.renderNewForm);
 
-router.post("/listings",isLogin,validatelisting,wrapAsync(async(req,res,next)=>{
-
-let {title,price,location,country}= req.body;
-let owner = req.user._id;
-await Listing.insertOne({title,price,location,country,owner});
-
-console.log("new data entered in database ");
-req.flash("added","listing added success");
-res.redirect("/listings");
- 
-}))
+//post new form in db 
+router.post("/listings",isLogin,validatelisting,wrapAsync(listingcontroller.postNewForm));
 
 //edit a data 
-router.get("/listings/:id/edit",isLogin,(req,res)=>{
-let {id} =req.params;
-console.log("edit form called");
- res.render("listings/edit.ejs",{id});
-})
+router.get("/listings/:id/edit",isLogin,listingcontroller.editListingForm);
 
-router.put("/listings/:id",isOwner,wrapAsync(async(req,res)=>{
- 
-  let {id}= req.params;
-  let {price,location,country}=req.body;
-  await Listing.updateOne({_id:id},{$set:{price,location,country}}) ; 
-  console.log("updated value");
-  res.redirect(`/listings/${id}`);
-
-}))
+router.put("/listings/:id",isOwner,wrapAsync(listingcontroller.editListingPut));
 
 
 //delete 
-router.delete("/listings/:id",isOwner,wrapAsync(async(req,res)=>{
-  console.log("inside delte route");
-let {id}=req.params;
-  await Listing.findByIdAndDelete(id);
-  req.flash("deleted","listing delted");
-  res.redirect("/listings");
-}))
+router.delete("/listings/:id",isOwner,wrapAsync(listingcontroller.deleteListing));
 
 //yeslai last maa rakhya kinaki , yesma /listing paxi dynamic parameter xa 
 //jasle aru normal /listing paxi ko paramter ko kaam kharab garxa
 //view data 
-router.get("/listings/:id",wrapAsync(async(req,res)=>{
-  console.log("inside view");
-  let {id}= req.params;
-  let listed = await Listing.findOne({_id:id}).populate({path:"reviews",populate:{path:"author"}}).populate("owner");
-  console.log(listed);
- res.render("listings/view.ejs",{listed});
-}))
+router.get("/listings/:id",wrapAsync(listingcontroller.viewListingDetail));
 
 
 
