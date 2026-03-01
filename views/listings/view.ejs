@@ -119,11 +119,13 @@
     <img class="listing-image" src="<%= listed.image.url %>" alt="Image not loaded">
 
     <div class="details">
+       <h2>owned by: <span><%= listed.owner.username %></span></h2>
       <h2>Price: <span>$<%= listed.price %></span></h2>
       <h2>Location: <span><%= listed.location %></span></h2>
       <h2>Country: <span><%= listed.country %></span></h2>
     </div>
 
+      <% if(curruser && curruser._id.equals(listed.owner._id)) { %>
     <div class="buttons">
       <form method="get" action="/listings/<%= listed._id %>/edit">
         <button type="submit" class="edit-btn">Edit</button>
@@ -133,8 +135,7 @@
         <button type="submit" class="delete-btn">Delete</button>
       </form>
     </div>
-
-
+    <% } %>
     <div class="review">
     
     <form action="/listings/<%=listed.id%>/reviews" method="POST" onsubmit="check(event)">

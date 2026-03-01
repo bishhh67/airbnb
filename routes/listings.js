@@ -8,7 +8,7 @@ const wrapAsync = require("../utils/asyncwrap");
 const ExpressError= require("../utils/ExpressErros");
 
 const {listingschema,reviewSchema} =require("../joischema");
-const { isLogin } = require("../authenticate");
+const { isLogin ,isOwner} = require("../authenticate");
 
 
 const validatelisting = (req,res,next)=>{
@@ -44,8 +44,8 @@ console.log("create form called");
 router.post("/listings",isLogin,validatelisting,wrapAsync(async(req,res,next)=>{
 
 let {title,price,location,country}= req.body;
-
-await Listing.insertOne({title,price,location,country});
+let owner = req.user._id;
+await Listing.insertOne({title,price,location,country,owner});
 
 console.log("new data entered in database ");
 req.flash("added","listing added success");
@@ -60,7 +60,7 @@ console.log("edit form called");
  res.render("listings/edit.ejs",{id});
 })
 
-router.put("/listings/:id",wrapAsync(async(req,res)=>{
+router.put("/listings/:id",isOwner,wrapAsync(async(req,res)=>{
  
   let {id}= req.params;
   let {price,location,country}=req.body;
@@ -72,7 +72,7 @@ router.put("/listings/:id",wrapAsync(async(req,res)=>{
 
 
 //delete 
-router.delete("/listings/:id",wrapAsync(async(req,res)=>{
+router.delete("/listings/:id",isOwner,wrapAsync(async(req,res)=>{
   console.log("inside delte route");
 let {id}=req.params;
   await Listing.findByIdAndDelete(id);
@@ -86,8 +86,8 @@ let {id}=req.params;
 router.get("/listings/:id",wrapAsync(async(req,res)=>{
   console.log("inside view");
   let {id}= req.params;
-  let listed = await Listing.findOne({_id:id}).populate("reviews");
-
+  let listed = await Listing.findOne({_id:id}).populate("reviews").populate("owner");
+  console.log(listed);
  res.render("listings/view.ejs",{listed});
 }))
 

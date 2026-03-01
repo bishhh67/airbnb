@@ -4,20 +4,20 @@ const router = express.Router({mergeParams:true});
 const User = require("../models/users");
 
 const passport=require("passport");
-
+const { saveredirecturl } = require("../authenticate");
 
 //for signup
 router.get("/signup",(req,res)=>{
   res.render("users/signup.ejs");
 })
 
-
-router.post("/signup",async(req,res)=>{
+router.post("/signup",saveredirecturl,async(req,res)=>{
   let {email,username,password} = req.body;
   let newuser = new User ({email,username});
   let registeruser = await User.register( newuser, password);
 
   console.log(registeruser);
+
   req.login(registeruser, (err)=>{
     if (err){
       return next(err);
@@ -37,7 +37,8 @@ router.post("/login",passport.authenticate("local", { failureRedirect: "/login",
 
   ,async(req,res)=>{
   req.flash("added","welcome to air bnb ");
-  res.redirect("/listings");
+  let redirecturl =res.locals.redirecturl || "/listings"
+    res.redirect(redirecturl);
 })
 
 
@@ -51,6 +52,4 @@ router.get("/logout",(req,res,next)=>{
     res.redirect("/login");
   })
 })
-
-
 module.exports= router;

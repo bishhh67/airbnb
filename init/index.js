@@ -15,8 +15,15 @@ main().then(()=>{console.log("mongo conn succesfull");}).catch((err)=>{console.l
 //async process vayeko vayera , aysnc function vitra haalera initialize gareko 
 const initDB = async ()=>{
   await Listing.deleteMany({});
-  await Listing.insertMany(data);
-  console.log("data was initialized ");
+
+await Listing.insertMany(
+  data.map(obj => ({ ...obj, owner: "69a1c99abb8a88ee9f074a15" }))
+);
+
+ 
 };
 
 initDB();
+
+
+//69a1c99abb8a88ee9f074a15
